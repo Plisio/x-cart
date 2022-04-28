@@ -1,0 +1,12 @@
+# Copyright (c) 2011-present The right software Ltd. All rights reserved.
+# See https://www.x-cart.com/license-agreement.html for license details.
+
+XLite\Model\Payment\Method:
+  - service_name: Plisiogateway
+    class: Module\Plisio\PlisioGateway\Model\Payment\Processor\PlisioGateway
+    type: C
+    translations:
+      - code: en
+        name: Plisio Payment Gateway
+    settings:
+      - name: api_key

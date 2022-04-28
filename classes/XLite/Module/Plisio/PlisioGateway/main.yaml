@@ -1,0 +1,14 @@
+# Copyright (c) 2011-present Qualiteam software Ltd. All rights reserved.
+# See https://www.x-cart.com/license-agreement.html for license details.
+
+version: 5.4.0.0
+type: payment
+authorName: 'Plisio'
+moduleName: 'Plisio Payment Gateway'
+description: 'Accept payments in Bitcoin and other cryptocurrencies'
+minorRequiredCoreVersion: 0
+dependsOn: {  }
+incompatibleWith: {  }
+skins: {  }
+showSettingsForm: false
+canDisable: true

@@ -1,0 +1,10 @@
+<table cellspacing="1" cellpadding="5" class="settings-table">
+    <tr>
+        <td class="setting-name">
+            <label for="settings_apiKey">{{ t('Api key') }}</label>
+        </td>
+        <td>
+            <input type="text" id="settings_apiKey" name="settings[api_key]" value="{{ this.paymentMethod.getSetting('api_key') }}" class="validate[required,maxSize[255]]" />
+        </td>
+    </tr>
+</table>
