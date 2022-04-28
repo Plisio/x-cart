@@ -34,7 +34,7 @@ Follow the steps below:
 2) Expand the Apps tab
 3) Click on My Apps section
 4) Click on Upload addon button.
-5) Select the .tar module archive and click on Install addon button.
+5) Select the .zip module archive and click on Install addon button.
 6) Now click on Store Setup >> Payment Methods
 7) On Payment Methods page click on Add payment method and search for Plisio Payment Gateway and click Install button
 8) After installation you will be redirected to Plisio Payment Gateway settings page. Insert your api key.
