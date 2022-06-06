@@ -6,16 +6,13 @@
 
 namespace XLite\Module\Plisio\PlisioGateway\Model\Payment\Processor;
 
+use XLite\Module\Plisio\PlisioGateway\Lib\PlisioClient;
+
 /**
  * Plisio payment processor
  */
 class PlisioGateway extends \XLite\Model\Payment\Base\WebBased
 {
-    /**
-     * production form url
-     */
-    const FORM_URL_PRODUCTION = 'https://plisio.net/api/v1/invoices/new';
-    const FORM_METHOD_GET  = 'get';
 
     public function isTestMode(\XLite\Model\Payment\Method $method)
     {
@@ -175,17 +172,9 @@ class PlisioGateway extends \XLite\Model\Payment\Base\WebBased
      */
     protected function getFormURL()
     {
-        return static::FORM_URL_PRODUCTION;
-    }
+        $plisio = new PlisioClient($this->transaction->getPaymentMethod()->getSetting('api_key'));
 
-    /**
-     * Get redirect form fields list
-     *
-     * @return array
-     */
-    protected function getFormFields()
-    {
-        $fields = array(
+        $request = array(
             'source_currency' => $this->getCurrencyCode(),
             'source_amount' => $this->getFormattedPrice($this->transaction->getValue()),
             'email' => $this->transaction->getOrigProfile()->getEmail(),
@@ -196,15 +185,32 @@ class PlisioGateway extends \XLite\Model\Payment\Base\WebBased
             'cancel_url' => $this->getReturnURL('transaction_id', true, true),
             'plugin' => 'X-Cart',
             'version' => '1.0.0',
-            'api_key' => $this->getSetting('api_key'),
-            'redirect_to_invoice' => 'true'
+            'api_key' => $this->transaction->getPaymentMethod()->getSetting('api_key')
         );
 
-        static::log(
-            array('main_form_fields' => $fields)
-        );
+        $plOrder = $plisio->createTransaction($request);
 
-        return $fields;
+        if ($plOrder && $plOrder['status'] !== 'error' && !empty($plOrder['data'])) {
+            return $plOrder['data']['invoice_url'];
+        } else {
+            \XLite\Core\TopMessage::addError('Error occurred! ' . implode(',', json_decode($plOrder['data']['message'], true)));
+            return '';
+        }
+    }
+
+    /**
+     * Get redirect form fields list
+     *
+     * @return array
+     */
+    protected function getFormFields()
+    {
+        return array();
+    }
+
+    protected function assembleFormBody($formFields)
+    {
+        return true;
     }
 
     /**
